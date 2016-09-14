@@ -1,13 +1,21 @@
 {
-  "name": "ts-func-tools",
+  "name": "scalts",
   "version": "0.0.1",
   "description": "Typescript libraries with some functional items",
-  "main": "index.d.ts",
+  "main": "src/scalts.js",
   "scripts": {
     "main": "tsc",
+    "prepublish":"npm test",
     "pretest": "tsc",
     "test": "mocha"
   },
+  "typescript": {
+    "definition": "src/scalts.d.ts"
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dohrm/ts-func-tools.git"

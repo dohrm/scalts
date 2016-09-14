@@ -3,7 +3,7 @@ import {Optional, Some, None}  from './Optional'
 import {Either, Left, Right}   from './Either'
 import {Try, Success, Failure} from './Try'
 
-const functools = {
+const scalts = {
     Optional,
     Some,
     None,
@@ -15,4 +15,4 @@ const functools = {
     Failure
 };
 
-export = functools
+export = scalts
