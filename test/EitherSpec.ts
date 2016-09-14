@@ -11,6 +11,8 @@ describe('Either', () => {
     it('#isRight', () => {
         assert(right.isRight);
         assert(left.isRight === false);
+        assert(left.toString().indexOf('Left(') > -1);
+        assert(right.toString().indexOf('Right(') > -1);
     });
     it('#isLeft', () => {
         assert(right.isLeft === false);
