@@ -1,4 +1,7 @@
-# ts-func-tools
+[![Build Status](https://travis-ci.org/dohrm/scalts.svg?branch=master)](https://travis-ci.org/dohrm/scalts)
+
+
+# scalts
 
 The goal of this library is to provide some scala like monades and functional feature.
 
