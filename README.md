@@ -1,4 +1,7 @@
 [![Build Status](https://travis-ci.org/dohrm/scalts.svg?branch=master)](https://travis-ci.org/dohrm/scalts)
+[![Code Climate](https://codeclimate.com/github/dohrm/scalts/badges/gpa.svg)](https://codeclimate.com/github/dohrm/scalts)
+[![Test Coverage](https://codeclimate.com/github/dohrm/scalts/badges/coverage.svg)](https://codeclimate.com/github/dohrm/scalts/coverage)
+[![Issue Count](https://codeclimate.com/github/dohrm/scalts/badges/issue_count.svg)](https://codeclimate.com/github/dohrm/scalts)
 
 
 # scalts

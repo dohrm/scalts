@@ -5,9 +5,9 @@
   "main": "src/scalts.js",
   "scripts": {
     "main": "tsc",
-    "prepublish":"npm test",
-    "pretest": "tsc",
-    "test": "mocha"
+    "prepublish": "npm test",
+    "cover": "tsc && node ./node_modules/istanbul/lib/cli.js cover -x '**/logger.*' _mocha test/**/*.js",
+    "test": "npm run cover"
   },
   "typescript": {
     "definition": "src/scalts.d.ts"
@@ -31,8 +31,10 @@
   },
   "homepage": "https://github.com/dohrm/ts-func-tools#readme",
   "devDependencies": {
+    "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
     "power-assert": "^1.4.1",
+    "remap-istanbul": "^0.6.4",
     "typescript": "^2.0.2"
   }
 }
