@@ -6,7 +6,7 @@
   "scripts": {
     "main": "tsc",
     "prepublish": "npm test",
-    "cover": "tsc && node ./node_modules/istanbul/lib/cli.js cover -x '**/logger.*' _mocha test/**/*.js",
+    "cover": "tsc && istanbul cover -x '**/logger.*' _mocha test/**/*.js",
     "test": "npm run cover"
   },
   "typescript": {
