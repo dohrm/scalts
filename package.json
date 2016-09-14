@@ -1,6 +1,6 @@
 {
   "name": "scalts",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Typescript libraries with some functional items",
   "main": "src/scalts.js",
   "scripts": {
@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dohrm/ts-func-tools.git"
+    "url": "git+https://github.com/dohrm/scalts.git"
   },
   "keywords": [
     "Typescript",
@@ -27,9 +27,9 @@
   "author": "dohrm",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dohrm/ts-func-tools/issues"
+    "url": "https://github.com/dohrm/scalts/issues"
   },
-  "homepage": "https://github.com/dohrm/ts-func-tools#readme",
+  "homepage": "https://github.com/dohrm/scalts#readme",
   "devDependencies": {
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
