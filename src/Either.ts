@@ -14,15 +14,15 @@ import {Optional, Some, None} from './Optional'
  * that Left is used for failure and Right is used for success.
  */
 export interface Either<A, B> {
-    value: A | B;
+    readonly value: A | B;
     /**
      * Returns `true` if this is a `Left`, `false` otherwise.
      */
-    isLeft: boolean;
+    readonly isLeft: boolean;
     /**
      * Returns `true` if this is a `Right`, `false` otherwise.
      */
-    isRight: boolean;
+    readonly isRight: boolean;
     /**
      * Projects this `Either` as a `Right`.
      */
