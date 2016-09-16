@@ -2,6 +2,9 @@
 import {Optional, Some, None}  from './Optional'
 import {Either, Left, Right}   from './Either'
 import {Try, Success, Failure} from './Try'
+import {Match, Case}           from './MatchCase'
+import {PartialFunction}       from './PartialFunction'
+import {Future}                from './Future'
 
 const scalts = {
     Optional,
@@ -12,7 +15,11 @@ const scalts = {
     Right,
     Try,
     Success,
-    Failure
+    Failure,
+    Match,
+    Case,
+    PartialFunction,
+    Future
 };
 
 export = scalts
