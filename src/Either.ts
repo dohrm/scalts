@@ -295,7 +295,7 @@ export class LeftProjection<A, B> {
 
     filter(f: (a: A) => boolean): Optional<Either<A, B>> {
         if (this.self.isLeft) {
-            return f(<A>this.self.value) ? Optional(this.self) : None;
+            return f(<A>this.self.value) ? Optional.apply(this.self) : None;
         } else {
             return None;
         }
@@ -310,7 +310,7 @@ export class LeftProjection<A, B> {
     }
 
     toOptional(): Optional<A> {
-        return this.self.isLeft ? Optional(<A>this.self.value) : None;
+        return this.self.isLeft ? Optional.apply(<A>this.self.value) : None;
     }
 }
 
@@ -353,7 +353,7 @@ export class RightProjection<A, B> {
 
     filter(f: (b: B) => boolean): Optional<Either<A, B>> {
         if (this.self.isRight) {
-            return f(<B>this.self.value) ? Optional(this.self) : None;
+            return f(<B>this.self.value) ? Optional.apply(this.self) : None;
         } else {
             return None;
         }
@@ -368,7 +368,7 @@ export class RightProjection<A, B> {
     }
 
     toOptional(): Optional<B> {
-        return this.self.isRight ? Optional(<B>this.self.value) : None;
+        return this.self.isRight ? Optional.apply(<B>this.self.value) : None;
     }
 }
 

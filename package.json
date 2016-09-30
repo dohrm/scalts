@@ -1,6 +1,6 @@
 {
   "name": "scalts",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Typescript libraries with some functional items",
   "main": "src/scalts.js",
   "scripts": {
@@ -37,6 +37,9 @@
     "mocha": "^3.0.2",
     "power-assert": "^1.4.1",
     "remap-istanbul": "^0.6.4",
-    "typescript": "^2.0.2"
+    "typescript": "^2.0.3"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.8"
   }
 }

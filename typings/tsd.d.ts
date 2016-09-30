@@ -4,3 +4,4 @@
 /// <reference path="power-assert/power-assert.d.ts" />
 /// <reference path="sinon/sinon.d.ts" />
 /// <reference path="core-js/core-js.d.ts" />
+/// <reference path="reflect-metadata/reflect-metadata.d.ts" />

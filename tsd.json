@@ -22,6 +22,9 @@
     },
     "core-js/core-js.d.ts": {
       "commit": "6547d812453fb0e53f03b01fd6c0bf3bb30736b5"
+    },
+    "reflect-metadata/reflect-metadata.d.ts": {
+      "commit": "75ed034a886db8a0668bc3528aca27760e5fd1f8"
     }
   }
 }

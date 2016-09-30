@@ -214,7 +214,7 @@ export namespace Future {
             return fh.transformWith(t =>
                 t.fold(
                     e => searchRecursive(ft),
-                    a => f(a) ? Future.successful(Optional(a)) : searchRecursive(ft))
+                    a => f(a) ? Future.successful(Optional.apply(a)) : searchRecursive(ft))
             );
         };
         return searchRecursive(fus);
