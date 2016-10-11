@@ -1,5 +1,3 @@
-/// <reference path="../typings/tsd.d.ts" />
-
 import * as assert from 'power-assert';
 import {Either, Right, Left} from '../src/Either';
 

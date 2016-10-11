@@ -1,6 +1,6 @@
 {
   "name": "scalts",
-  "version": "0.3.0",
+  "version": "0.4.0-beta1",
   "description": "Typescript libraries with some functional items",
   "main": "src/scalts.js",
   "scripts": {
@@ -32,6 +32,11 @@
   },
   "homepage": "https://github.com/dohrm/scalts#readme",
   "devDependencies": {
+    "@types/empower": "^1.2.30",
+    "@types/mocha": "^2.2.32",
+    "@types/power-assert": "^1.4.29",
+    "@types/power-assert-formatter": "^1.4.28",
+    "@types/sinon": "^1.16.31",
     "codeclimate-test-reporter": "^0.3.3",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
@@ -40,6 +45,8 @@
     "typescript": "^2.0.3"
   },
   "dependencies": {
+    "@types/core-js": "^0.9.34",
+    "@types/reflect-metadata": "0.0.5",
     "reflect-metadata": "^0.1.8"
   }
 }

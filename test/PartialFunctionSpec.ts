@@ -1,5 +1,3 @@
-/// <reference path="../typings/tsd.d.ts" />
-
 import * as assert              from 'power-assert';
 import {Case}                   from '../src/MatchCase'
 import {PartialFunction}        from '../src/PartialFunction';

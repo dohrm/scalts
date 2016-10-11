@@ -1,5 +1,3 @@
-/// <reference path="../typings/tsd.d.ts" />
-
 import * as assert from 'power-assert';
 import {Try, Success, Failure} from '../src/Try';
 import {Optional, Some, None} from '../src/Optional';
