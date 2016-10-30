@@ -186,7 +186,7 @@ export namespace Future {
     }
 
     export function failed<A>(e: Error): Future<A> {
-        return new FutureImpl<A>(<Promise<A>>Promise.reject(e), Failure<A>(e));
+        return new FutureImpl<A>(<Promise<A>>Promise.reject<A>(e), Failure<A>(e));
     }
 
     export function successful<A>(a: A): Future<A> {
@@ -292,15 +292,15 @@ class FutureImpl<A> implements Future<A> {
         try {
             return f();
         } catch (e) {
-            return <Promise<B>>Promise.reject(e);
+            return <Promise<B>>Promise.reject<B>(e);
         }
     }
 
     transform<B>(f: (t: Try<A>) => Try<B>): Future<B> {
         return new FutureImpl(
             this.promise.then<B>(
-                a => this.tryPromise(() => f(Success(a)).fold((e) => <Promise<B>>Promise.reject(e), (b) => Promise.resolve(b))),
-                e => this.tryPromise(() => f(Failure<A>(e)).fold((e) => <Promise<B>>Promise.reject(e), (b) => Promise.resolve(b)))
+                a => this.tryPromise(() => f(Success(a)).fold((e) => <Promise<B>>Promise.reject<B>(e), (b) => Promise.resolve(b))),
+                e => this.tryPromise(() => f(Failure<A>(e)).fold((e) => <Promise<B>>Promise.reject<B>(e), (b) => Promise.resolve(b)))
             )
         );
     }
