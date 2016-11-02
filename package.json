@@ -1,6 +1,6 @@
 {
   "name": "scalts",
-  "version": "0.4.0-beta2",
+  "version": "0.4.0",
   "description": "Typescript libraries with some functional items",
   "main": "./src/scalts.js",
   "types": "./src/scalts.d.ts",
