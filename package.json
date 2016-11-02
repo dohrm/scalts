@@ -2,17 +2,13 @@
   "name": "scalts",
   "version": "0.4.0-beta2",
   "description": "Typescript libraries with some functional items",
-  "main": "./src/scalts.js",
-  "types": "./src/scalts.d.ts",
+  "main": "./src/scalts.ts",
   "scripts": {
     "main": "tsc",
     "prepublish": "npm test",
     "cover": "tsc && istanbul cover -x '**/logger.*' _mocha test/**/*.js",
     "cover:publish": "CODECLIMATE_REPO_TOKEN=3a735fa909712074d569bbc8a7bd195dfddc064138d245b3e799cef1ebbefa97 codeclimate-test-reporter < ./coverage/lcov.info",
     "test": "npm run cover"
-  },
-  "typescript": {
-    "definition": "src/scalts.d.ts"
   },
   "files": [
     "src",
