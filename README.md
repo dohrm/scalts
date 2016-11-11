@@ -18,7 +18,7 @@ like scalaz with like a [scalaz ApplicativeBuilder](https://github.com/scalaz/sc
 ## Installation
 
 
-* `npm i scalts --save`
+`npm i scalts --save`
 
 
 ## Optional
