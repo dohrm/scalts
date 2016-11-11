@@ -19,16 +19,6 @@ like scalaz with like a [scalaz ApplicativeBuilder](https://github.com/scalaz/sc
 
 
 * `npm i scalts --save`
-* Add into your `tsd.d.ts` file :
-
-```
-declare module "scalts" {
-    import scalts = require("node_modules/scalts/src/scalts");
-    export = scalts;
-}
-```
-
-TODO : I will see how to change this configuration.
 
 
 ## Optional
