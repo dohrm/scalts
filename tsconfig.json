@@ -14,6 +14,7 @@
         "rootDir": "./src"
     },
     "include": [
-        "index.ts"
+        "index.ts",
+        "./test/**/*"
     ]
 }
