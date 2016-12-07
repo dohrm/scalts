@@ -319,7 +319,7 @@ describe("Future", () => {
             return Future.find(futures, x => x === 2).promise.then(a => assert.equal(a.get(), 2));
         });
         it("empty", () => {
-            const futures = [];
+            const futures : any[] = [];
             return Future.find(futures, x => x === 0).promise.then(a => assert(a.isEmpty));
         });
     });
@@ -347,7 +347,7 @@ describe("Future", () => {
             return Future.traverse(xs, (a) => Future.successful(a + "ok")).promise.then(a => assert.deepEqual(a, ["1ok", "2ok"]));
         });
         it("empty", () => {
-            const xs = [];
+            const xs : any[] = [];
             return Future.traverse(xs, (a) => Future.successful(a + "ok")).promise.then(a => assert.deepEqual(a, []));
         });
         it("ng", () => {

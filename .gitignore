@@ -7,6 +7,7 @@ index.d.ts
 
 
 # Npm and typescript
+npm-debug.log
 node_modules
 coverage
 
