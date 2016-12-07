@@ -1,6 +1,6 @@
 {
   "name": "scalts",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Typescript libraries with some functional items",
   "main": "index.js",
   "types": "index.d.ts",
@@ -47,7 +47,6 @@
     "typescript": "^2.1.4"
   },
   "dependencies": {
-    "@types/core-js": "^0.9.35",
     "@types/reflect-metadata": "0.0.5",
     "reflect-metadata": "^0.1.8"
   }
