@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "prepublish": "npm test",
-    "cover": "tsc && istanbul cover -x '**/logger.*' _mocha test/**/*.js",
+    "cover": "tsc --p tsconfig.test.json && istanbul cover -x '**/logger.*' _mocha test/**/*.js",
     "cover:publish": "CODECLIMATE_REPO_TOKEN=3a735fa909712074d569bbc8a7bd195dfddc064138d245b3e799cef1ebbefa97 codeclimate-test-reporter < ./coverage/lcov.info",
     "test": "npm run cover"
   },
