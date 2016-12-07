@@ -12,5 +12,8 @@
         "preserveConstEnums": true,
         "suppressImplicitAnyIndexErrors": true,
         "rootDir": "./src"
-    }
+    },
+    "include": [
+        "index.ts"
+    ]
 }

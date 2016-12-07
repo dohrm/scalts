@@ -1,19 +1,23 @@
 {
   "name": "scalts",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Typescript libraries with some functional items",
-  "main": "./src/scalts.ts",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "main": "tsc",
+    "build": "tsc",
     "prepublish": "npm test",
     "cover": "tsc && istanbul cover -x '**/logger.*' _mocha test/**/*.js",
     "cover:publish": "CODECLIMATE_REPO_TOKEN=3a735fa909712074d569bbc8a7bd195dfddc064138d245b3e799cef1ebbefa97 codeclimate-test-reporter < ./coverage/lcov.info",
     "test": "npm run cover"
   },
   "files": [
-    "src",
-    "index.ts",
-    "README.md"
+    "src/**/*.js",
+    "src/**/*.d.ts",
+    "index.js",
+    "index.d.ts",
+    "README.md",
+    "LICENSE"
   ],
   "repository": {
     "type": "git",
@@ -31,19 +35,19 @@
   "homepage": "https://github.com/dohrm/scalts#readme",
   "devDependencies": {
     "@types/empower": "^1.2.30",
-    "@types/mocha": "^2.2.32",
+    "@types/mocha": "^2.2.33",
     "@types/power-assert": "^1.4.29",
     "@types/power-assert-formatter": "^1.4.28",
-    "@types/sinon": "^1.16.31",
-    "codeclimate-test-reporter": "^0.3.3",
+    "@types/sinon": "^1.16.32",
+    "codeclimate-test-reporter": "^0.4.0",
     "istanbul": "^0.4.5",
-    "mocha": "^3.0.2",
-    "power-assert": "^1.4.1",
-    "remap-istanbul": "^0.6.4",
-    "typescript": "^2.0.3"
+    "mocha": "^3.2.0",
+    "power-assert": "^1.4.2",
+    "remap-istanbul": "^0.7.0",
+    "typescript": "^2.1.4"
   },
   "dependencies": {
-    "@types/core-js": "^0.9.34",
+    "@types/core-js": "^0.9.35",
     "@types/reflect-metadata": "0.0.5",
     "reflect-metadata": "^0.1.8"
   }
