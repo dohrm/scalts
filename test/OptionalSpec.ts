@@ -83,23 +83,23 @@ describe('Optional', () => {
         assert(Optional.apply<number>(null).orElse(Optional.apply(2)).get() === 2);
     });
     it('#apply1', () => {
-        assert(Optional.apply(1).apply1(Optional.apply(2), (a, b) => a + b).get() === 3);
-        assert(Optional.apply<number>(null).apply1(Optional.apply(2), (a, b) => a + b).isEmpty);
-        assert(Optional.apply(1).apply1(Optional.apply<number>(null), (a, b) => a + b).isEmpty);
+        assert(Optional.apply(1).apply1(() => Optional.apply(2), (a, b) => a + b).get() === 3);
+        assert(Optional.apply<number>(null).apply1(() => Optional.apply(2), (a, b) => a + b).isEmpty);
+        assert(Optional.apply(1).apply1(() => Optional.apply<number>(null), (a, b) => a + b).isEmpty);
     });
     it('#apply2', () => {
-        assert(Optional.apply(1).apply2(Optional.apply(2), Optional.apply(3), (a, b, c) => a + b + c).get() === 6);
-        assert(Optional.apply<number>(null).apply2(Optional.apply(2), Optional.apply(3), (a, b, c) => a + b + c).isEmpty);
-        assert(Optional.apply(1).apply2(Optional.apply<number>(null), Optional.apply(3), (a, b, c) => a + b + c).isEmpty);
-        assert(Optional.apply(1).apply2(Optional.apply(2), Optional.apply<number>(null), (a, b, c) => a + b + c).isEmpty);
+        assert(Optional.apply(1).apply2(() => Optional.apply(2), () => Optional.apply(3), (a, b, c) => a + b + c).get() === 6);
+        assert(Optional.apply<number>(null).apply2(() => Optional.apply(2), () => Optional.apply(3), (a, b, c) => a + b + c).isEmpty);
+        assert(Optional.apply(1).apply2(() => Optional.apply<number>(null), () => Optional.apply(3), (a, b, c) => a + b + c).isEmpty);
+        assert(Optional.apply(1).apply2(() => Optional.apply(2), () => Optional.apply<number>(null), (a, b, c) => a + b + c).isEmpty);
     });
     it('#chain', () => {
-        assert(Optional.apply(1).chain(Optional.apply(2)).run((a, b) => a + b).get() === 3);
-        assert(Optional.apply(1).chain(Optional.apply(2)).chain(Optional.apply(3)).run((a, b, c) => a + b + c).get() === 6);
-        assert(Optional.apply(1).chain(Optional.apply(2)).chain(Optional.apply(3)).chain(Optional.apply(4)).run((a, b, c, d) => a + b + c + d).get() === 10);
-        assert(Optional.apply(1).chain(Optional.apply(2)).chain(Optional.apply(3)).chain(Optional.apply(4)).chain(Optional.apply(5)).run((a, b, c, d, e) => a + b + c + d + e).get() === 15);
-        assert(Optional.apply(1).chain(Optional.apply(2)).chain(Optional.apply(3)).chain(Optional.apply(4)).chain(Optional.apply(5)).chain(Optional.apply(6)).run((a, b, c, d, e, f) => a + b + c + d + e + f).get() === 21);
-        assert(Optional.apply<number>(null).chain(Optional.apply(1)).run((a, b) => a + b).isEmpty);
-        assert(Optional.apply(1).chain(Optional.apply<number>(null)).run((a, b) => a + b).isEmpty);
+        assert(Optional.apply(1).chain(() => Optional.apply(2)).run((a, b) => a + b).get() === 3);
+        assert(Optional.apply(1).chain(() => Optional.apply(2)).chain(() => Optional.apply(3)).run((a, b, c) => a + b + c).get() === 6);
+        assert(Optional.apply(1).chain(() => Optional.apply(2)).chain(() => Optional.apply(3)).chain(() => Optional.apply(4)).run((a, b, c, d) => a + b + c + d).get() === 10);
+        assert(Optional.apply(1).chain(() => Optional.apply(2)).chain(() => Optional.apply(3)).chain(() => Optional.apply(4)).chain(() => Optional.apply(5)).run((a, b, c, d, e) => a + b + c + d + e).get() === 15);
+        assert(Optional.apply(1).chain(() => Optional.apply(2)).chain(() => Optional.apply(3)).chain(() => Optional.apply(4)).chain(() => Optional.apply(5)).chain(() => Optional.apply(6)).run((a, b, c, d, e, f) => a + b + c + d + e + f).get() === 21);
+        assert(Optional.apply<number>(null).chain(() => Optional.apply(1)).run((a, b) => a + b).isEmpty);
+        assert(Optional.apply(1).chain(() => Optional.apply<number>(null)).run((a, b) => a + b).isEmpty);
     });
 });

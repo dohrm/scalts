@@ -53,9 +53,9 @@ const fn = ( a: string, b: sring, c: boolean, d: number ) => {
    return a + ' ' + b + ' ' + ( c ? 'is' : 'isn\'t' ) + ' ' + d;
 }
 
-Some( 'The' ).chain( Some( 'answer' ) )
-             .chain( Some( true ) )
-             .chain( Some( 42 ) )
+Some( 'The' ).chain( () => Some( 'answer' ) )
+             .chain( () => Some( true ) )
+             .chain( () => Some( 42 ) )
              .run( fn ); // Some( 'The answer is 42' );
 
 Some( 'The' ).chain( <Optional< string > >None )

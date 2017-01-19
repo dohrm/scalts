@@ -174,35 +174,35 @@ describe("Future", () => {
 
     describe("zip", () => {
         it("ok", () => {
-            return Future(() => 1).zip(Future(() => 2)).promise.then(x => assert.deepEqual(x, [1, 2]));
+            return Future(() => 1).zip(() => Future(() => 2)).promise.then(x => assert.deepEqual(x, [1, 2]));
         });
         it("ng", () => {
-            return Future(() => 1).zip(Future.failed(new Error)).promise.catch(e => assert(e instanceof Error));
+            return Future(() => 1).zip(() => Future.failed(new Error)).promise.catch(e => assert(e instanceof Error));
         });
     });
 
     describe("zipWith", () => {
         it("ok", () => {
-            return Future(() => 1).zipWith(Future(() => 2), (a, b) => a + b).promise.then(x => assert.equal(x, 3));
+            return Future(() => 1).zipWith(() => Future(() => 2), (a, b) => a + b).promise.then(x => assert.equal(x, 3));
         });
         it("ng", () => {
-            return Future(() => 1).zipWith(Future.failed<number>(new Error), (a, b) => a + b).promise.catch(e => assert(e instanceof Error));
+            return Future(() => 1).zipWith(() => Future.failed<number>(new Error), (a, b) => a + b).promise.catch(e => assert(e instanceof Error));
         });
     });
 
     describe("fallbackTo", () => {
         it("ok", () => {
-            return Future(() => 1).fallbackTo(Future(() => 2)).promise.then(x => assert.equal(x, 1));
+            return Future(() => 1).fallbackTo(() => Future(() => 2)).promise.then(x => assert.equal(x, 1));
         });
         it("ng to ok", () => {
             return Future<number>(() => {
                 throw 'err'
-            }).fallbackTo(Future(() => 2)).promise.then(x => assert.equal(x, 2));
+            }).fallbackTo(() => Future(() => 2)).promise.then(x => assert.equal(x, 2));
         });
         it("ng to ng", () => {
             return Future<number>(() => {
                 throw 'err'
-            }).fallbackTo(Future<number>(() => {
+            }).fallbackTo(() => Future<number>(() => {
                 throw 'err2'
             })).promise.catch(e => assert.equal(e, 'err'));
         });
@@ -226,31 +226,31 @@ describe("Future", () => {
 
     describe("apply1", () => {
         it("ok", () => {
-            return Future(() => 1).apply1(Future(() => 2), (a, b) => a + b).promise.then(x => assert.equal(x, 3));
+            return Future(() => 1).apply1(() => Future(() => 2), (a, b) => a + b).promise.then(x => assert.equal(x, 3));
         });
         it("ng", () => {
-            return Future(() => 1).apply1(Future.failed<number>(new Error), (a, b) => a + b).promise.catch(e => assert(e instanceof Error));
+            return Future(() => 1).apply1(() => Future.failed<number>(new Error), (a, b) => a + b).promise.catch(e => assert(e instanceof Error));
         });
     });
 
     describe("apply2", () => {
         it("ok", () => {
-            return Future(() => 1).apply2(Future(() => 2), Future(() => 3), (a, b, c) => a + b + c).promise.then(x => assert.equal(x, 6));
+            return Future(() => 1).apply2(() => Future(() => 2), () => Future(() => 3), (a, b, c) => a + b + c).promise.then(x => assert.equal(x, 6));
         });
         it("ng", () => {
-            return Future(() => 1).apply2(Future.failed<number>(new Error), Future(() => 3), (a, b, c) => a + b + c).promise.catch(e => assert(e instanceof Error));
+            return Future(() => 1).apply2(() => Future.failed<number>(new Error), () => Future(() => 3), (a, b, c) => a + b + c).promise.catch(e => assert(e instanceof Error));
         });
     });
 
     describe("chain", () => {
         it("ok1", () => {
-            return Future(() => 1).chain(Future(() => 2)).run((a, b) => a + b).promise.then(x => assert.equal(x, 3));
+            return Future(() => 1).chain(() => Future(() => 2)).run((a, b) => a + b).promise.then(x => assert.equal(x, 3));
         });
         it("ok2", () => {
-            return Future(() => 1).chain(Future(() => 2)).chain(Future(() => 3)).run((a, b, c) => a + b + c).promise.then(x => assert.equal(x, 6));
+            return Future(() => 1).chain(() => Future(() => 2)).chain(() => Future(() => 3)).run((a, b, c) => a + b + c).promise.then(x => assert.equal(x, 6));
         });
         it("ng", () => {
-            return Future(() => 1).chain(Future.failed<number>(new Error)).chain(Future(() => 1)).run((a, b, c) => a + b + c).promise.catch(e => assert(e instanceof Error));
+            return Future(() => 1).chain(() => Future.failed<number>(new Error)).chain(() => Future(() => 1)).run((a, b, c) => a + b + c).promise.catch(e => assert(e instanceof Error));
         });
     });
 

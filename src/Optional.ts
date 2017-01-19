@@ -2,6 +2,8 @@
 
 import 'reflect-metadata';
 
+import { Supplier, Predicate, Mapper, Func } from './types'
+
 /**
  * Represents optional values. Instances of `Optional`
  *  are either an instance of $some or the object $none.
@@ -42,7 +44,7 @@ export abstract class Optional<A> {
      * @see flatMap
      * @see foreach
      */
-    map<B>( f: ( a: A ) => B ): Optional<B> {
+    map<B>( f: Mapper< A, B > ): Optional<B> {
         return this.isEmpty ? None : Some( f( this.get() ) );
     }
 
@@ -56,7 +58,7 @@ export abstract class Optional<A> {
      * @param ifEmpty the expression to evaluate if empty.
      * @param f       the function to apply if nonempty.
      */
-    fold<B>( ifEmpty: B, f: ( a: A ) => B ): B {
+    fold<B>( ifEmpty: B, f: Mapper< A, B > ): B {
         return this.isEmpty ? ifEmpty : f( this.get() );
     }
 
@@ -69,7 +71,7 @@ export abstract class Optional<A> {
      * @see map
      * @see foreach
      */
-    flatMap<B>( f: ( a: A ) => Optional<B> ): Optional<B> {
+    flatMap<B>( f: Mapper< A, Optional< B > > ): Optional<B> {
         return this.isEmpty ? None : f( this.get() );
     }
 
@@ -77,16 +79,16 @@ export abstract class Optional<A> {
      * Returns this $option if it is nonempty '''and''' applying the predicate $F to
      * this $option's value returns true. Otherwise, return $none.
      *
-     * @param p the predicate used for testing.
+     * @param f the predicate used for testing.
      */
-    filter( f: ( a: A ) => boolean ): Optional<A> {
+    filter( f: Predicate< A > ): Optional<A> {
         return this.isEmpty || f( this.get() ) ? this : None;
     }
 
     /**
      * Tests whether the option contains a given value as an element.
      *
-     * @param elem the element to test.
+     * @param b the element to test.
      * @return `true` if the option has an element that is equal (as determined by `==`) to `elem`, `false` otherwise.
      */
     contains<B extends A>( b: B ): boolean {
@@ -97,18 +99,18 @@ export abstract class Optional<A> {
      * Returns true if this option is nonempty '''and''' the predicate $f returns true when applied to this $option's value.
      * Otherwise, returns false.
      *
-     * @param p the predicate to test
+     * @param f the predicate to test
      */
-    exists( f: ( a: A ) => boolean ): boolean {
+    exists( f: Predicate< A > ): boolean {
         return this.nonEmpty && f( this.get() );
     }
 
     /**
      * Returns true if this option is empty '''or''' the predicate $f returns true when applied to this $option's value.
      *
-     * @param p the predicate to test
+     * @param f the predicate to test
      */
-    forall( f: ( a: A ) => boolean ): boolean {
+    forall( f: Predicate< A > ): boolean {
         return this.isEmpty || f( this.get() );
     }
 
@@ -119,7 +121,7 @@ export abstract class Optional<A> {
      * @see map
      * @see flatMap
      */
-    foreach( f: ( a: A ) => void ): void {
+    foreach( f: Func< A > ): void {
         if ( this.nonEmpty ) {
             f( this.get() );
         }
@@ -128,34 +130,34 @@ export abstract class Optional<A> {
     /**
      * Returns this $option if it is nonempty, otherwise return the result of evaluating `alternative`.
      *
-     * @param alternative the alternative expression.
+     * @param ob the alternative expression.
      */
     orElse<B extends A>( ob: Optional<B> ): Optional<A> {
         return this.isEmpty ? ob : this;
     }
 
     // add methods
-    apply1<B, C>( ob: Optional<B>, f: ( a: A, b: B ) => C ): Optional<C> {
-        return this.flatMap( a => ob.map( b => f( a, b ) ) );
+    apply1<B, C>( ob: Supplier< Optional<B> >, f: ( a: A, b: B ) => C ): Optional<C> {
+        return this.flatMap( a => ob().map( b => f( a, b ) ) );
     }
 
-    apply2<B, C, D>( ob: Optional<B>, oc: Optional<C>, f: ( a: A, b: B, c: C ) => D ): Optional<D> {
-        return this.flatMap( a => ob.flatMap( b => oc.map( c => f( a, b, c ) ) ) );
+    apply2<B, C, D>( ob: Supplier< Optional<B> >, oc: Supplier< Optional<C> >, f: ( a: A, b: B, c: C ) => D ): Optional<D> {
+        return this.flatMap( a => ob().flatMap( b => oc().map( c => f( a, b, c ) ) ) );
     }
 
-    apply3<B, C, D, E>( ob: Optional<B>, oc: Optional<C>, od: Optional<D>, f: ( a: A, b: B, c: C, d: D ) => E ): Optional<E> {
-        return this.flatMap( a => ob.flatMap( b => oc.flatMap( c => od.map( d => f( a, b, c, d ) ) ) ) );
+    apply3<B, C, D, E>( ob: Supplier< Optional<B> >, oc: Supplier< Optional<C> >, od: Supplier< Optional<D> >, f: ( a: A, b: B, c: C, d: D ) => E ): Optional<E> {
+        return this.flatMap( a => ob().flatMap( b => oc().flatMap( c => od().map( d => f( a, b, c, d ) ) ) ) );
     }
 
-    apply4<B, C, D, E, F>( ob: Optional<B>, oc: Optional<C>, od: Optional<D>, oe: Optional<E>, f: ( a: A, b: B, c: C, d: D, e: E ) => F ): Optional<F> {
-        return this.flatMap( a => ob.flatMap( b => oc.flatMap( c => od.flatMap( d => oe.map( e => f( a, b, c, d, e ) ) ) ) ) );
+    apply4<B, C, D, E, F>( ob: Supplier< Optional<B> >, oc: Supplier< Optional<C> >, od: Supplier< Optional<D> >, oe: Supplier< Optional<E> >, f: ( a: A, b: B, c: C, d: D, e: E ) => F ): Optional<F> {
+        return this.flatMap( a => ob().flatMap( b => oc().flatMap( c => od().flatMap( d => oe().map( e => f( a, b, c, d, e ) ) ) ) ) );
     }
 
-    apply5<B, C, D, E, F, G>( ob: Optional<B>, oc: Optional<C>, od: Optional<D>, oe: Optional<E>, of: Optional<F>, f: ( a: A, b: B, c: C, d: D, e: E, f: F ) => G ): Optional<G> {
-        return this.flatMap( a => ob.flatMap( b => oc.flatMap( c => od.flatMap( d => oe.flatMap( e => of.map( ff => f( a, b, c, d, e, ff ) ) ) ) ) ) );
+    apply5<B, C, D, E, F, G>( ob: Supplier< Optional<B> >, oc: Supplier< Optional<C> >, od: Supplier< Optional<D> >, oe: Supplier< Optional<E> >, of: Supplier< Optional<F> >, f: ( a: A, b: B, c: C, d: D, e: E, f: F ) => G ): Optional<G> {
+        return this.flatMap( a => ob().flatMap( b => oc().flatMap( c => od().flatMap( d => oe().flatMap( e => of().map( ff => f( a, b, c, d, e, ff ) ) ) ) ) ) );
     }
 
-    chain<B>( ob: Optional<B> ): OptionalBuilder1<A, B> {
+    chain<B>( ob: Supplier< Optional<B> > ): OptionalBuilder1<A, B> {
         return new OptionalBuilder1( this, ob );
     }
 
@@ -216,70 +218,73 @@ export const None: Optional<any> = new NoneImpl();
 
 export class OptionalBuilder1<A, B> {
     constructor( private oa: Optional<A>,
-                 private ob: Optional<B> ) {
+                 private ob: Supplier< Optional<B> > ) {
     }
 
     run<C>( f: ( a: A, b: B ) => C ): Optional<C> {
         return this.oa.apply1( this.ob, f );
     }
 
-    chain<C>( oc: Optional<C> ): OptionalBuilder2<A, B, C> {
+    chain<C>( oc: Supplier< Optional<C> > ): OptionalBuilder2<A, B, C> {
         return new OptionalBuilder2( this.oa, this.ob, oc );
     }
 }
 
 export class OptionalBuilder2<A, B, C> {
     constructor( private oa: Optional<A>,
-                 private ob: Optional<B>,
-                 private oc: Optional<C> ) {
+                 private ob: Supplier< Optional<B> >,
+                 private oc: Supplier< Optional<C> > ) {
     }
 
     run<D>( f: ( a: A, b: B, c: C ) => D ): Optional<D> {
         return this.oa.apply2( this.ob, this.oc, f );
     }
 
-    chain<D>( od: Optional<D> ): OptionalBuilder3<A, B, C, D> {
+    chain<D>( od: Supplier< Optional<D> > ): OptionalBuilder3<A, B, C, D> {
         return new OptionalBuilder3( this.oa, this.ob, this.oc, od );
     }
 }
 
 export class OptionalBuilder3<A, B, C, D> {
-    constructor( private oa: Optional<A>, private ob: Optional<B>, private oc: Optional<C>, private od: Optional<D> ) {
+    constructor( private oa: Optional<A>,
+                 private ob: Supplier< Optional<B> >,
+                 private oc: Supplier< Optional<C> >,
+                 private od: Supplier< Optional<D> > ) {
     }
 
     run<E>( f: ( a: A, b: B, c: C, d: D ) => E ): Optional<E> {
         return this.oa.apply3( this.ob, this.oc, this.od, f );
     }
 
-    chain<E>( oe: Optional<E> ): OptionalBuilder4<A, B, C, D, E> {
+    chain<E>( oe: Supplier< Optional<E> > ): OptionalBuilder4<A, B, C, D, E> {
         return new OptionalBuilder4( this.oa, this.ob, this.oc, this.od, oe );
     }
 }
 
 export class OptionalBuilder4<A, B, C, D, E> {
     constructor( private oa: Optional<A>,
-                 private ob: Optional<B>,
-                 private oc: Optional<C>,
-                 private od: Optional<D>,
-                 private oe: Optional<E> ) {
+                 private ob: Supplier< Optional<B> >,
+                 private oc: Supplier< Optional<C> >,
+                 private od: Supplier< Optional<D> >,
+                 private oe: Supplier< Optional<E> > ) {
     }
 
     run<F>( f: ( a: A, b: B, c: C, d: D, e: E ) => F ): Optional<F> {
         return this.oa.apply4( this.ob, this.oc, this.od, this.oe, f );
     }
 
-    chain<F>( of: Optional<F> ): OptionalBuilder5<A, B, C, D, E, F> {
+    chain<F>( of: Supplier< Optional<F> > ): OptionalBuilder5<A, B, C, D, E, F> {
         return new OptionalBuilder5( this.oa, this.ob, this.oc, this.od, this.oe, of );
     }
 }
 
 export class OptionalBuilder5<A, B, C, D, E, F> {
     constructor( private oa: Optional<A>,
-                 private ob: Optional<B>,
-                 private oc: Optional<C>,
-                 private od: Optional<D>,
-                 private oe: Optional<E>,
-                 private of: Optional<F> ) {
+                 private ob: Supplier< Optional<B> >,
+                 private oc: Supplier< Optional<C> >,
+                 private od: Supplier< Optional<D> >,
+                 private oe: Supplier< Optional<E> >,
+                 private of: Supplier< Optional<F> > ) {
     }
 
     run<G>( f: ( a: A, b: B, c: C, d: D, e: E, f: F ) => G ): Optional<G> {

@@ -99,15 +99,15 @@ describe('Either', () => {
     it('#chain', () => {
         const rightBis = Right(1);
 
-        assert.equal(right.chain(rightBis).run((a, b) => a + b).getOrElse(() => 0), 2);
-        assert.equal(right.chain(rightBis).chain(rightBis).run((a, b, c) => a + b + c).getOrElse(() => 0), 3);
-        assert.equal(right.chain(rightBis).chain(rightBis).chain(rightBis).run((a, b, c, d) => a + b + c + d).getOrElse(() => 0), 4);
-        assert.equal(right.chain(rightBis).chain(rightBis).chain(rightBis).chain(rightBis).run((a, b, c, d, e) => a + b + c + d + e).getOrElse(() => 0), 5);
-        assert.equal(right.chain(rightBis).chain(rightBis).chain(rightBis).chain(rightBis).chain(rightBis).run((a, b, c, d, e, f) => a + b + c + d + e + f).getOrElse(() => 0), 6);
-        assert(right.chain(left).run((a, b) => a + b).isLeft);
-        assert(right.chain(rightBis).chain(left).run((a, b, c) => a + b + c).isLeft);
-        assert(right.chain(rightBis).chain(rightBis).chain(left).run((a, b, c, d) => a + b + c + d).isLeft);
-        assert(right.chain(rightBis).chain(rightBis).chain(rightBis).chain(left).run((a, b, c, d, e) => a + b + c + d + e).isLeft);
-        assert(right.chain(rightBis).chain(rightBis).chain(rightBis).chain(rightBis).chain(left).run((a, b, c, d, e, f) => a + b + c + d + e + f).isLeft);
+        assert.equal(right.chain(() => rightBis).run((a, b) => a + b).getOrElse(() => 0), 2);
+        assert.equal(right.chain(() => rightBis).chain(() => rightBis).run((a, b, c) => a + b + c).getOrElse(() => 0), 3);
+        assert.equal(right.chain(() => rightBis).chain(() => rightBis).chain(() => rightBis).run((a, b, c, d) => a + b + c + d).getOrElse(() => 0), 4);
+        assert.equal(right.chain(() => rightBis).chain(() => rightBis).chain(() => rightBis).chain(() => rightBis).run((a, b, c, d, e) => a + b + c + d + e).getOrElse(() => 0), 5);
+        assert.equal(right.chain(() => rightBis).chain(() => rightBis).chain(() => rightBis).chain(() => rightBis).chain(() => rightBis).run((a, b, c, d, e, f) => a + b + c + d + e + f).getOrElse(() => 0), 6);
+        assert(right.chain(() => left).run((a, b) => a + b).isLeft);
+        assert(right.chain(() => rightBis).chain(() => left).run((a, b, c) => a + b + c).isLeft);
+        assert(right.chain(() => rightBis).chain(() => rightBis).chain(() => left).run((a, b, c, d) => a + b + c + d).isLeft);
+        assert(right.chain(() => rightBis).chain(() => rightBis).chain(() => rightBis).chain(() => left).run((a, b, c, d, e) => a + b + c + d + e).isLeft);
+        assert(right.chain(() => rightBis).chain(() => rightBis).chain(() => rightBis).chain(() => rightBis).chain(() => left).run((a, b, c, d, e, f) => a + b + c + d + e + f).isLeft);
     });
 });

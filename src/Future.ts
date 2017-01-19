@@ -3,6 +3,8 @@
 import {Try, Success, Failure} from './Try';
 import {Optional, Some, None} from './Optional';
 
+import { Supplier } from './types'
+
 
 // TODO review this code to use PartialFunction and other ...
 
@@ -121,7 +123,7 @@ export interface Future<A> {
      * Otherwise, if `that` future fails, the resulting future is failed
      * with the throwable stored in `that`.
      */
-    zip<B>(fu: Future<B>): Future<[A, B]>;
+    zip<B>(fu: Supplier< Future<B> >): Future<[A, B]>;
     /**
      * Zips the values of `this` and `that` future using a function `f`,
      * and creates a new future holding the result.
@@ -134,7 +136,7 @@ export interface Future<A> {
      * is failed with that throwable if it is non-fatal.
      * @param f
      */
-    zipWith<B, C>(fu: Future<B>, f: (a: A, b: B) => C): Future<C>;
+    zipWith<B, C>(fu: Supplier< Future<B> >, f: (a: A, b: B) => C): Future<C>;
     /**
      * Creates a new future which holds the result of this future if it was completed successfully, or, if not,
      * the result of the `that` future if `that` is completed successfully.
@@ -142,7 +144,7 @@ export interface Future<A> {
      *
      * Using this method will not cause concurrent programs to become nondeterministic.
      */
-    fallbackTo<B extends A>(fu: Future<B>): Future<A>;
+    fallbackTo<B extends A>(fu: Supplier< Future<B> >): Future<A>;
     /**
      * Applies the side-effecting function to the result of this future, and returns
      * a new future with the result of this future.
@@ -159,9 +161,9 @@ export interface Future<A> {
 
 
     // add methods
-    apply1<B, C>(ob: Future<B>, f: (a: A, b: B) => C): Future<C>;
-    apply2<B, C, D>(ob: Future<B>, oc: Future<C>, f: (a: A, b: B, c: C) => D): Future<D>;
-    chain<B>(ob: Future<B>): FutureBuilder1<A, B>;
+    apply1<B, C>(ob: Supplier< Future<B> >, f: (a: A, b: B) => C): Future<C>;
+    apply2<B, C, D>(ob: Supplier< Future<B> >, oc: Supplier< Future<C> >, f: (a: A, b: B, c: C) => D): Future<D>;
+    chain<B>(ob: Supplier< Future<B> >): FutureBuilder1<A, B>;
 }
 
 export function Future<A>(f: Promise<A> | (() => A)): Future<A> {
@@ -237,7 +239,7 @@ export namespace Future {
             return fzero;
         }
         return fu.reduce<Future<Array<B>>>((fbs, a) =>
-                fbs.zipWith(f(a), (bs, fa) => {
+                fbs.zipWith(() => f(a), (bs, fa) => {
                     bs.push(fa);
                     return bs;
                 }),
@@ -360,16 +362,16 @@ class FutureImpl<A> implements Future<A> {
         );
     }
 
-    zip<B>(fu: Future<B>): Future<[A, B]> {
-        return this.flatMap(a => fu.map<[A, B]>(b => [a, b]));
+    zip<B>(fu: Supplier< Future<B> >): Future<[A, B]> {
+        return this.flatMap(a => fu().map<[A, B]>(b => [a, b]));
     }
 
-    zipWith<B, C>(fu: Future<B>, f: (a: A, b: B) => C): Future<C> {
-        return this.flatMap(a => fu.map(b => f(a, b)));
+    zipWith<B, C>(fu: Supplier< Future<B> >, f: (a: A, b: B) => C): Future<C> {
+        return this.flatMap(a => fu().map(b => f(a, b)));
     }
 
-    fallbackTo<B extends A>(fu: Future<B>): Future<A> {
-        return this.recoverWith(e => Some(fu)).recoverWith(e => Some(this));
+    fallbackTo<B extends A>(fu: Supplier< Future<B> >): Future<A> {
+        return this.recoverWith(e => Some(fu())).recoverWith(e => Some(this));
     }
 
     andThen<B>(f: (t: Try<A>) => B): Future<A> {
@@ -385,15 +387,15 @@ class FutureImpl<A> implements Future<A> {
         });
     }
 
-    apply1<B, C>(ob: Future<B>, f: (a: A, b: B) => C): Future<C> {
+    apply1<B, C>(ob: Supplier< Future<B> >, f: (a: A, b: B) => C): Future<C> {
         return this.zipWith(ob, f);
     }
 
-    apply2<B, C, D>(ob: Future<B>, oc: Future<C>, f: (a: A, b: B, c: C) => D): Future<D> {
-        return this.flatMap(a => ob.flatMap(b => oc.map(c => f(a, b, c))));
+    apply2<B, C, D>(ob: Supplier< Future<B> >, oc: Supplier< Future<C> >, f: (a: A, b: B, c: C) => D): Future<D> {
+        return this.flatMap(a => ob().flatMap(b => oc().map(c => f(a, b, c))));
     }
 
-    chain<B>(ob: Future<B>): FutureBuilder1<A, B> {
+    chain<B>(ob: Supplier< Future<B> >): FutureBuilder1<A, B> {
         return new FutureBuilder1(this, ob);
     }
 }
@@ -402,67 +404,67 @@ class FutureImpl<A> implements Future<A> {
  * FutureBuilder.
  */
 export class FutureBuilder1<A, B> {
-    constructor(private oa: Future<A>, private ob: Future<B>) {
+    constructor(private oa: Future<A>, private ob: Supplier< Future<B> >) {
     }
 
     run<C>(f: (a: A, b: B) => C): Future<C> {
-        return this.oa.flatMap(a => this.ob.map(b => f(a, b)));
+        return this.oa.flatMap(a => this.ob().map(b => f(a, b)));
     }
 
-    chain<C>(oc: Future<C>): FutureBuilder2<A, B, C> {
+    chain<C>(oc: Supplier< Future<C> >): FutureBuilder2<A, B, C> {
         return new FutureBuilder2(this.oa, this.ob, oc);
     }
 }
 
 export class FutureBuilder2<A, B, C> {
-    constructor(private oa: Future<A>, private ob: Future<B>, private oc: Future<C>) {
+    constructor(private oa: Future<A>, private ob: Supplier< Future<B> >, private oc: Supplier< Future<C> >) {
     }
 
     run<D>(f: (a: A, b: B, c: C) => D): Future<D> {
-        return this.oa.flatMap(a => this.ob.flatMap(b => this.oc.map(c => f(a, b, c))));
+        return this.oa.flatMap(a => this.ob().flatMap(b => this.oc().map(c => f(a, b, c))));
     }
 
-    chain<D>(od: Future<D>): FutureBuilder3<A, B, C, D> {
+    chain<D>(od: Supplier< Future<D> >): FutureBuilder3<A, B, C, D> {
         return new FutureBuilder3(this.oa, this.ob, this.oc, od);
     }
 }
 
 export class FutureBuilder3<A, B, C, D> {
-    constructor(private oa: Future<A>, private ob: Future<B>, private oc: Future<C>, private od: Future<D>) {
+    constructor(private oa: Future<A>, private ob: Supplier< Future<B> >, private oc: Supplier< Future<C> >, private od: Supplier< Future<D> >) {
     }
 
     run<E>(f: (a: A, b: B, c: C, d: D) => E): Future<E> {
-        return this.oa.flatMap(a => this.ob.flatMap(b => this.oc.flatMap(c =>
-            this.od.map(d => f(a, b, c, d)))));
+        return this.oa.flatMap(a => this.ob().flatMap(b => this.oc().flatMap(c =>
+            this.od().map(d => f(a, b, c, d)))));
     }
 
-    chain<E>(oe: Future<E>): FutureBuilder4<A, B, C, D, E> {
+    chain<E>(oe: Supplier< Future<E> >): FutureBuilder4<A, B, C, D, E> {
         return new FutureBuilder4(this.oa, this.ob, this.oc, this.od, oe);
     }
 }
 
 export class FutureBuilder4<A, B, C, D, E> {
-    constructor(private oa: Future<A>, private ob: Future<B>, private oc: Future<C>,
-                private od: Future<D>, private oe: Future<E>) {
+    constructor(private oa: Future<A>, private ob: Supplier< Future<B> >, private oc: Supplier< Future<C> >,
+                private od: Supplier< Future<D> >, private oe: Supplier< Future<E> >) {
     }
 
     run<F>(f: (a: A, b: B, c: C, d: D, e: E) => F): Future<F> {
-        return this.oa.flatMap(a => this.ob.flatMap(b => this.oc.flatMap(c => this.od.flatMap(d =>
-            this.oe.map(e => f(a, b, c, d, e))))));
+        return this.oa.flatMap(a => this.ob().flatMap(b => this.oc().flatMap(c => this.od().flatMap(d =>
+            this.oe().map(e => f(a, b, c, d, e))))));
     }
 
-    chain<F>(of: Future<F>): FutureBuilder5<A, B, C, D, E, F> {
+    chain<F>(of: Supplier< Future<F> >): FutureBuilder5<A, B, C, D, E, F> {
         return new FutureBuilder5(this.oa, this.ob, this.oc, this.od, this.oe, of);
     }
 }
 
 export class FutureBuilder5<A, B, C, D, E, F> {
-    constructor(private oa: Future<A>, private ob: Future<B>, private oc: Future<C>,
-                private od: Future<D>, private oe: Future<E>, private of: Future<F>) {
+    constructor(private oa: Future<A>, private ob: Supplier< Future<B> >, private oc: Supplier< Future<C> >,
+                private od: Supplier< Future<D> >, private oe: Supplier< Future<E> >, private of: Supplier< Future<F> >) {
     }
 
     run<G>(f: (a: A, b: B, c: C, d: D, e: E, f: F) => G): Future<G> {
-        return this.oa.flatMap(a => this.ob.flatMap(b => this.oc.flatMap(c => this.od.flatMap(d => this.oe.flatMap(e =>
-            this.of.map(ff => f(a, b, c, d, e, ff)))))));
+        return this.oa.flatMap(a => this.ob().flatMap(b => this.oc().flatMap(c => this.od().flatMap(d => this.oe().flatMap(e =>
+            this.of().map(ff => f(a, b, c, d, e, ff)))))));
     }
 }
