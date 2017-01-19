@@ -58,9 +58,9 @@ Some( 'The' ).chain( () => Some( 'answer' ) )
              .chain( () => Some( 42 ) )
              .run( fn ); // Some( 'The answer is 42' );
 
-Some( 'The' ).chain( <Optional< string > >None )
-             .chain( Some( true ) )
-             .chain( Some( 42 ) )
+Some( 'The' ).chain( () => <Optional< string > >None )
+             .chain( () => Some( true ) )
+             .chain( () => Some( 42 ) )
              .run( fn ); // None
 
 
