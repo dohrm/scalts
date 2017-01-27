@@ -38,8 +38,8 @@ describe('Optional', () => {
         }
     });
     it('#getOrElse', () => {
-        assert(Optional.apply(1).getOrElse(0) === 1);
-        assert(Optional.apply<number>(null).getOrElse(0) === 0);
+        assert(Optional.apply(1).getOrElse(() => 0) === 1);
+        assert(Optional.apply<number>(null).getOrElse(() => 0) === 0);
     });
     it('#map', () => {
         assert(Optional.apply(1).map((x) => x + 1).get() === 2);
@@ -79,8 +79,8 @@ describe('Optional', () => {
         Optional.apply<number>(null).foreach((x) => assert(x === 1));
     });
     it('#orElse', () => {
-        assert(Optional.apply(1).orElse(Optional.apply(2)).get() === 1);
-        assert(Optional.apply<number>(null).orElse(Optional.apply(2)).get() === 2);
+        assert(Optional.apply(1).orElse(() => Optional.apply(2)).get() === 1);
+        assert(Optional.apply<number>(null).orElse(() => Optional.apply(2)).get() === 2);
     });
     it('#apply1', () => {
         assert(Optional.apply(1).apply1(() => Optional.apply(2), (a, b) => a + b).get() === 3);

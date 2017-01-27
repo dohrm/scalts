@@ -30,8 +30,8 @@ export abstract class Optional<A> {
      *
      * @param a the default expression.
      */
-    getOrElse<B extends A>( a: B ): A {
-        return this.isEmpty ? a : this.get();
+    getOrElse<B extends A>( a: Supplier< B > ): A {
+        return this.isEmpty ? a() : this.get();
     }
 
     /**
@@ -132,8 +132,8 @@ export abstract class Optional<A> {
      *
      * @param ob the alternative expression.
      */
-    orElse<B extends A>( ob: Optional<B> ): Optional<A> {
-        return this.isEmpty ? ob : this;
+    orElse<B extends A>( ob: Supplier< Optional<B> > ): Optional<A> {
+        return this.isEmpty ? ob() : this;
     }
 
     // add methods
