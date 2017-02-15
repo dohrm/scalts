@@ -46,8 +46,8 @@ describe('Optional', () => {
         assert(Optional.apply<number>(null).map((x) => x + 1).isEmpty);
     });
     it('#fold', () => {
-        assert(Optional.apply(1).fold(0, (x) => x + 1) === 2);
-        assert(Optional.apply<number>(null).fold(0, (x) => x + 1) === 0);
+        assert(Optional.apply(1).fold(() => 0, (x) => x + 1) === 2);
+        assert(Optional.apply<number>(null).fold(() => 0, (x) => x + 1) === 0);
     });
     it('#filter', () => {
         assert(Optional.apply(1).filter((x) => x === 1).nonEmpty);

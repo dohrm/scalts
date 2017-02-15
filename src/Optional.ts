@@ -58,8 +58,8 @@ export abstract class Optional<A> {
      * @param ifEmpty the expression to evaluate if empty.
      * @param f       the function to apply if nonempty.
      */
-    fold<B>( ifEmpty: B, f: Mapper< A, B > ): B {
-        return this.isEmpty ? ifEmpty : f( this.get() );
+    fold<B>( ifEmpty: Supplier< B >, f: Mapper< A, B > ): B {
+        return this.isEmpty ? ifEmpty() : f( this.get() );
     }
 
     /**

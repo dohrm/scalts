@@ -356,7 +356,7 @@ class FutureImpl<A> implements Future<A> {
     recoverWith<B extends A>(f: (e: Error) => Optional<Future<B>>): Future<A> {
         return this.transformWith(t =>
             t.fold(
-                e => f(e).fold(Future.failed<B>(e), a => a),
+                e => f(e).fold(() => Future.failed<B>(e), a => a),
                 a => Future.successful(a)
             )
         );
