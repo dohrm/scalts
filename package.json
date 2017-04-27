@@ -35,19 +35,19 @@
   "homepage": "https://github.com/dohrm/scalts#readme",
   "devDependencies": {
     "@types/empower": "^1.2.30",
-    "@types/mocha": "^2.2.33",
+    "@types/mocha": "^2.2.41",
     "@types/power-assert": "^1.4.29",
     "@types/power-assert-formatter": "^1.4.28",
-    "@types/sinon": "^1.16.32",
-    "codeclimate-test-reporter": "^0.4.0",
+    "@types/sinon": "^2.1.3",
+    "codeclimate-test-reporter": "^0.4.1",
     "istanbul": "^0.4.5",
-    "mocha": "^3.2.0",
+    "mocha": "^3.3.0",
     "power-assert": "^1.4.2",
-    "remap-istanbul": "^0.7.0",
-    "typescript": "^2.1.4"
+    "remap-istanbul": "^0.9.5",
+    "typescript": "^2.3.1"
   },
   "dependencies": {
     "@types/reflect-metadata": "0.0.5",
-    "reflect-metadata": "^0.1.8"
+    "reflect-metadata": "^0.1.10"
   }
 }

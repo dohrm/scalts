@@ -301,8 +301,8 @@ class FutureImpl<A> implements Future<A> {
     transform<B>(f: (t: Try<A>) => Try<B>): Future<B> {
         return new FutureImpl(
             this.promise.then<B>(
-                a => this.tryPromise(() => f(Success(a)).fold((e) => <Promise<B>>Promise.reject<B>(e), (b) => Promise.resolve(b))),
-                e => this.tryPromise(() => f(Failure<A>(e)).fold((e) => <Promise<B>>Promise.reject<B>(e), (b) => Promise.resolve(b)))
+                (a:A) => this.tryPromise(() => f(Success(a)).fold((e: Error) => <Promise<B>>Promise.reject<B>(e), (b:B) => Promise.resolve(b))),
+                e => this.tryPromise(() => f(Failure<A>(e)).fold((e: Error) => <Promise<B>>Promise.reject<B>(e), (b) => Promise.resolve(b)))
             )
         );
     }
@@ -325,7 +325,7 @@ class FutureImpl<A> implements Future<A> {
     transformWith<B>(f: (t: Try<A>) => Future<B>): Future<B> {
         return new FutureImpl(
             this.promise.then<B>(
-                a => this.tryPromise(() => f(Success(a)).promise),
+                (a:A) => this.tryPromise(() => f(Success(a)).promise),
                 e => this.tryPromise(() => f(Failure<A>(e)).promise)
             )
         );
