@@ -5,11 +5,12 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && babel ./src --out-dir ./src --ignore ./node_modules/",
     "prepublish": "npm test",
     "cover": "tsc && istanbul cover -x '**/logger.*' _mocha test/**/*.js",
     "cover:publish": "CODECLIMATE_REPO_TOKEN=3a735fa909712074d569bbc8a7bd195dfddc064138d245b3e799cef1ebbefa97 codeclimate-test-reporter < ./coverage/lcov.info",
-    "test": "npm run cover"
+    "test": "npm run cover && npm run clean",
+    "clean": "rm -rf ./**/*.js && rm -rf ./**/*.d.ts && rm index.js && rm index.d.ts"
   },
   "files": [
     "src/**/*.js",
@@ -39,6 +40,9 @@
     "@types/power-assert": "^1.4.29",
     "@types/power-assert-formatter": "^1.4.28",
     "@types/sinon": "^2.1.3",
+    "babel-cli": "6.24.1",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-stage-0": "6.24.1",
     "codeclimate-test-reporter": "^0.4.1",
     "istanbul": "^0.4.5",
     "mocha": "^3.3.0",
